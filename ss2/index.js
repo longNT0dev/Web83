@@ -153,6 +153,16 @@ app.post("/posts/:userId", (req, res) => {
     })
 })
 
+// Câu 7 
+app.get("/search/:content", (req, res) => {
+    const { content } = req.params
+
+    const filterPosts = posts.filter(post => post.content.toLowerCase().includes(content.toLowerCase()))
+
+    res.status(200).send(filterPosts)
+
+})
+
 app.get("/posts/all-public/get", (req, res) => {
 
     const publicPosts = posts.filter(post => post.isPublic)
@@ -161,4 +171,61 @@ app.get("/posts/all-public/get", (req, res) => {
         message: "ok",
         data: publicPosts
     })
+})
+
+
+app.get("/users/json-server", (req, res) => {
+    fetch("http://localhost:3000/users")
+        .then(res => res.json())
+        .then(data => {
+            res.status(200).send(data)
+        })
+        .catch(err => {
+            console.log("Error:", err)
+        })
+})
+
+
+app.post("/users/json-server/create", (req, res) => {
+
+    const { username } = req.body
+
+    if (username) {
+        res.status(400).send("Not OK")
+    }
+
+    // async/await 
+    fetch("http://localhost:3000/users", {
+        method: "POST",
+        "content-type": "application/json",
+        body: JSON.stringify(data)
+    })
+        .then(res => res.json())
+        .then(data => {
+            res.status(200).send(data)
+        })
+        .catch(err => {
+            console.log("Error:", err)
+        })
+})
+
+
+app.post("/users/json-server/async/create", async (req, res) => {
+    // async/await 
+    try {
+        const response = await fetch("http://localhost:3000/users", {
+            method: "POST",
+            "content-type": "application/json",
+            body: JSON.stringify({
+                username: "Long"
+            })
+        })
+
+        const data = await response.json()
+        res.status(200).send(data)
+    } catch (err) {
+        // Bắn lỗi vào 1 nơi nào đó => Xử lý lỗi 
+
+        res.status(500).send("Hệ thống đang cập nhật dữ liệu")
+    }
 })
