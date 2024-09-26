@@ -3,7 +3,7 @@ import { users, posts } from "./data.js"
 import { uuid } from 'uuidv4';
 import connectMongoDb from "./mongoDBConfig/config.js"
 import mongoose from 'mongoose';
-import checkAdminRole from './middlewares/checkAdminRole.js';
+import authMiddleware from './middlewares/authMiddleware.js'
 import morgan from 'morgan';
 import userRoute from "./routers/userRoute.js"
 import adminRoute from "./routers/adminRoute.js"
@@ -29,13 +29,14 @@ app.listen(8080, () => {
 
 app.use(express.json()); // global middleware
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
-// app.use(checkAdminRole)
 
 
 app.use("/api/v1/auth", authRoute)
-app.use("/api/v1/users", userRoute)
-app.use("/api/v1/comments", commentRoute)
+app.use("/api/v1/users", authMiddleware.authentication, userRoute)
+app.use("/api/v1/comments", authMiddleware.authentication, commentRoute)
 
+
+app.use("/api/v1/admin", authMiddleware.isAdmin)
 
 
 

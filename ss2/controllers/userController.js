@@ -3,7 +3,11 @@ import PostModel from "../models/posts.js"
 const createPost = async (req, res) => {
     try {
         // Sẽ không được truyền userId từ body
-        const { content, userId } = req.body
+        const { content } = req.body
+
+        console.log(req.user);
+
+        const { userId } = req.user
 
         await PostModel.create({
             content: content,
@@ -35,7 +39,7 @@ const updatePost = async (req, res) => {
         post.content = newContent.trim()
 
         post.save()
-    } catch(err) {
+    } catch (err) {
         res.send("not ok")
     }
 }
