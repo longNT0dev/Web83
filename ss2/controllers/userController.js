@@ -1,5 +1,7 @@
 import PostModel from "../models/posts.js"
 
+
+
 const createPost = async (req, res) => {
     try {
         // Sẽ không được truyền userId từ body

@@ -9,6 +9,7 @@ import userRoute from "./routers/userRoute.js"
 import adminRoute from "./routers/adminRoute.js"
 import authRoute from "./routers/authRoute.js"
 import commentRoute from "./routers/commentRoute.js"
+import dotenv from 'dotenv';
 const app = express();
 
 
@@ -20,16 +21,20 @@ mongoose.connect('mongodb://localhost:27017/facebook')
         console.log("Kết nối tới database thất bại", err);
     });
 
-app.listen(8080, () => {
-    console.log('Server is running!');
-});
-
 // Request -> Route -> Response
-// Request -> Middleware -> Route -> Response
+// Request -> Middleware -> Route -> Response 
+dotenv.config({
+    path: process.env.NODE_ENV == "production" ? "./.env" : "./local.env"
+})
 
 app.use(express.json()); // global middleware
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
 
+
+app.listen(8080, () => {
+    console.log("ENV", process.env.NODE_ENV)
+    console.log('Server is running!');
+});
 
 app.use("/api/v1/auth", authRoute)
 app.use("/api/v1/users", authMiddleware.authentication, userRoute)
