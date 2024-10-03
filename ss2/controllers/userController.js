@@ -7,8 +7,6 @@ const createPost = async (req, res) => {
         // Sẽ không được truyền userId từ body
         const { content } = req.body
 
-        console.log(req.user);
-
         const { userId } = req.user
 
         await PostModel.create({

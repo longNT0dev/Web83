@@ -3,6 +3,7 @@ import UserModel from "../models/users.js"
 import bcrypt from 'bcrypt'
 import otpGenerator from "otp-generator"
 import OtpModel from "../models/otp.js";
+import jwt from 'jsonwebtoken';
 const saltRounds = 10;
 
 const register = async (req, res) => {
@@ -71,7 +72,8 @@ const login = async (req, res) => {
 
             if (result) {
                 // Trả về kết quả
-                res.status(200).send(`web-${user._id}-${user.email}-${uuid()}`)
+                const token = jwt.sign({ userId: user._id, email: user.email }, process.env.JWT_SECRETKEY, { expiresIn: '1h' });
+                res.status(200).send(token)
             } else {
                 res.status(403).send("Login failed")
             }
@@ -90,7 +92,7 @@ const forgotPassword = async (req, res) => {
     if (!email) {
         return res.status(400).send("Email is required")
     } else {
-        email = email.trim() 
+        email = email.trim()
     }
 
     const isExistUser = await UserModel.findOne({ email: email }).exec()

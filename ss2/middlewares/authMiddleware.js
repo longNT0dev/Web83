@@ -1,3 +1,5 @@
+import jwt from "jsonwebtoken"
+
 const authMiddleware = {
     authentication: (req, res, next) => {
         // Giả sử req gửi kèm token trong Header, nếu có => Đã đăng nhập, nếu không => Chưa đăng nhập
@@ -10,17 +12,17 @@ const authMiddleware = {
 
             // Giải mã token để lấy thông tin user
             if (token) {
-                const [from, userId, email, ...otherInfo] = token.split("-")
+                // const [from, userId, email, ...otherInfo] = token.split("-")
+                try {
+                    const decodedToken = jwt.verify(token, process.env.JWT_SECRETKEY)
+                    req.user = decodedToken
 
-                if(token == "admin") {
-                    next()
+                    return next()
+
+                } catch (e) {
+                    console.log(e);
+                    return res.send(e)
                 }
-
-                req.user = {
-                    from, userId, email, otherInfo
-                }
-
-                return next()
             } else {
                 res.status(403).send("Unauthorized")
             }
