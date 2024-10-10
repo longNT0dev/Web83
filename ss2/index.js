@@ -7,9 +7,11 @@ import authMiddleware from './middlewares/authMiddleware.js'
 import morgan from 'morgan';
 import userRoute from "./routers/userRoute.js"
 import adminRoute from "./routers/adminRoute.js"
+import uploadRoute from "./routers/uploadRoute.js"
 import authRoute from "./routers/authRoute.js"
 import commentRoute from "./routers/commentRoute.js"
 import dotenv from 'dotenv';
+import { v2 as cloudinary} from "cloudinary"
 const app = express();
 
 
@@ -21,6 +23,12 @@ mongoose.connect('mongodb://localhost:27017/facebook')
         console.log("Kết nối tới database thất bại", err);
     });
 
+
+cloudinary.config({
+    cloud_name: 'dxe7lsk2l',
+    api_key: '414112232159793',
+    api_secret: 'CrNjQMSsqR-SFJ1jB11g7A3R5Is'
+})
 // Request -> Route -> Response
 // Request -> Middleware -> Route -> Response 
 dotenv.config({
@@ -33,12 +41,13 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
 
 app.listen(8080, () => {
     console.log("ENV", process.env.NODE_ENV)
-    console.log('Server is running!');
+    console.log('Server is running on port 8080');
 });
 
 app.use("/api/v1/auth", authRoute)
 app.use("/api/v1/users", authMiddleware.authentication, userRoute)
 app.use("/api/v1/comments", authMiddleware.authentication, commentRoute)
+app.use("/api/v1/upload-file", uploadRoute)
 
 
 app.use("/api/v1/admin", authMiddleware.isAdmin)
