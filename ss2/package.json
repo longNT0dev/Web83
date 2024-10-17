@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "concurrently \"json-server --watch ./jsonServer/db.json\" \"nodemon index.js\"",
-    "startProduction": "set NODE_ENV=production && concurrently \"json-server --watch ./jsonServer/db.json\" \"nodemon index.js\""
+    "start": "nodemon index.js",
+    "startProduction": "set NODE_ENV=production && concurrently \"json-server --watch ./jsonServer/db.json\" \"nodemon index.js\"",
+    "build": ""
   },
   "type": "module",
   "author": "",
