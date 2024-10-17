@@ -12,7 +12,7 @@ const getPosts = async (req, res) => {
 
     console.log(skip);
 
-    const posts = await PostModel.find().skip(skip).limit(postPerPage).sort({ content: 0})
+    const posts = await PostModel.find().skip(skip).limit(postPerPage).sort({ content: 1})
 
     return res.send(posts)
 }
