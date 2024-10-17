@@ -11,11 +11,11 @@ import uploadRoute from "./routers/uploadRoute.js"
 import authRoute from "./routers/authRoute.js"
 import commentRoute from "./routers/commentRoute.js"
 import dotenv from 'dotenv';
-import { v2 as cloudinary} from "cloudinary"
+import { v2 as cloudinary } from "cloudinary"
 const app = express();
+dotenv.config()
 
-
-mongoose.connect('mongodb://localhost:27017/facebook')
+mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGGO_PASSWORD}@cluster0.twurc3h.mongodb.net/`)
     .then(() => {
         console.log("Kết nối tới database thành công");
     })
@@ -31,9 +31,7 @@ cloudinary.config({
 })
 // Request -> Route -> Response
 // Request -> Middleware -> Route -> Response 
-dotenv.config({
-    path: process.env.NODE_ENV == "production" ? "./.env" : "./local.env"
-})
+
 
 app.use(express.json()); // global middleware
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
