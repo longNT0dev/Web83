@@ -1,8 +1,9 @@
 import { Router } from "express"
-import { createPost, updatePost } from "../controllers/userController.js";
+import { createPost, updatePost, getPosts } from "../controllers/userController.js";
 
 const router = new Router();
 
+router.get("/getAllPost/:page", getPosts)
 router.post("/create-post", createPost)
 router.post("/update-post", updatePost)
 router.get("/", (req, res) => {

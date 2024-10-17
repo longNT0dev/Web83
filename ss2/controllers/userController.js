@@ -1,6 +1,22 @@
 import PostModel from "../models/posts.js"
 
 
+const getPosts = async (req, res) => {
+    const { page } = req.params
+
+    const postPerPage = 5
+    const totalPosts = await PostModel.countDocuments()
+    const totalPages = Math.ceil(totalPosts / postPerPage)
+
+    const skip = (page - 1) * postPerPage
+
+    console.log(skip);
+
+    const posts = await PostModel.find().skip(skip).limit(postPerPage).sort({ content: 0})
+
+    return res.send(posts)
+}
+
 
 const createPost = async (req, res) => {
     try {
@@ -61,6 +77,7 @@ const updatePost = async (req, res) => {
 // }
 
 export {
+    getPosts,
     createPost,
     updatePost
 }

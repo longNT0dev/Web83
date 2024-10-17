@@ -46,6 +46,7 @@ app.listen(8080, () => {
 
 app.use("/api/v1/auth", authRoute)
 app.use("/api/v1/users", authMiddleware.authentication, userRoute)
+app.use("/api/v1/posts", userRoute)
 app.use("/api/v1/comments", authMiddleware.authentication, commentRoute)
 app.use("/api/v1/upload-file", uploadRoute)
 
