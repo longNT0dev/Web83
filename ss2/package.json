@@ -6,8 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "startProduction": "set NODE_ENV=production && concurrently \"json-server --watch ./jsonServer/db.json\" \"nodemon index.js\"",
-    "build": ""
+    "startProduction": "set NODE_ENV=production && concurrently \"json-server --watch ./jsonServer/db.json\" \"nodemon index.js\""
   },
   "type": "module",
   "author": "",
